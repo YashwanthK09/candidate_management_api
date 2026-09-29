@@ -5,10 +5,12 @@ from .database import engine, Base, SessionLocal
 from . import models
 from .schemas import CandidateCreate, CandidateUpdate, Role,Status
 
+from fastapi.staticfiles import StaticFiles
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 
 def get_db():
     db = SessionLocal()
@@ -104,5 +106,3 @@ def delete_candidate(candidate_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Candidate deleted successfully"}
-
-    return new_candidate

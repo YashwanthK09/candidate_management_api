@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Candidate Management</h1>
+        <p>Internship Candidate Management System</p>
+    </header>
+
+    <main>
+
+        <!-- Registration Form -->
+        <section class="card">
+            <h2>Register Candidate</h2>
+
+            <form id="candidateForm">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+
+                    <div>
+                        <label>Mobile Number</label>
+                        <input
+                            type="text"
+                            id="phone"
+                            maxlength="10"
+                            pattern="[0-9]{10}"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label>Role</label>
+                        <select id="role" required>
+                            <option value="">Select Role</option>
+                            <option value="Python Developer">Python Developer</option>
+                            <option value="Java Developer">Java Developer</option>
+                            <option value="Frontend Developer">Frontend Developer</option>
+                            <option value="Backend Developer">Backend Developer</option>
+                            <option value="Data Analyst">Data Analyst</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Status</label>
+                        <select id="status" required>
+                            <option value="">Select Status</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Shortlisted">Shortlisted</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Selected">Selected</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Experience (years)</label>
+                        <input type="number" id="experience" min="0" value="0">
+                    </div>
+
+                    <div class="full-width">
+                        <label>Skills</label>
+                        <input
+                            type="text"
+                            id="skills"
+                            placeholder="Python, FastAPI, SQL"
+                        >
+                    </div>
+
+                </div>
+
+                <button type="submit">Register Candidate</button>
+
+                <p id="message"></p>
+
+            </form>
+        </section>
+
+
+            <section class="card" id="viewSection" style="display: none;">
+
+        <div class="section-header">
+            <h2>Candidate Details</h2>
+
+            <button onclick="closeView()">Close</button>
+        </div>
+
+        <div id="viewDetails"></div>
+
+        <button onclick="copyDetails()">Copy Details</button>
+
+        <p id="copyMessage"></p>
+
+    </section>
+        <section class="card" id="editSection" style="display: none;">
+
+        <div class="section-header">
+            <h2>Edit Candidate</h2>
+
+            <button type="button" onclick="closeEdit()">
+                Cancel
+            </button>
+        </div>
+
+        <form id="editForm">
+
+            <input type="hidden" id="editId">
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Name</label>
+                    <input type="text" id="editName" required>
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <input type="email" id="editEmail" required>
+                </div>
+
+                <div>
+                    <label>Mobile Number</label>
+                    <input
+                        type="text"
+                        id="editPhone"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Role</label>
+                    <select id="editRole" required>
+                        <option value="Python Developer">Python Developer</option>
+                        <option value="Java Developer">Java Developer</option>
+                        <option value="Frontend Developer">Frontend Developer</option>
+                        <option value="Backend Developer">Backend Developer</option>
+                        <option value="Data Analyst">Data Analyst</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Status</label>
+                    <select id="editStatus" required>
+                        <option value="Applied">Applied</option>
+                        <option value="Shortlisted">Shortlisted</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Selected">Selected</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Experience (years)</label>
+                    <input
+                        type="number"
+                        id="editExperience"
+                        min="0"
+                        required
+                    >
+                </div>
+
+                <div class="full-width">
+                    <label>Skills</label>
+                    <input type="text" id="editSkills">
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Save Changes
+            </button>
+
+            <p id="editMessage"></p>
+
+        </form>
+
+    </section>
+
+        <!-- Candidate List -->
+        <section class="card">
+
+            <div class="section-header">
+                <h2>Candidates</h2>
+
+                <button onclick="loadCandidates()">
+                    Refresh
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters">
+
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search by name..."
+                >
+
+                <select id="filterRole">
+                    <option value="">All Roles</option>
+                    <option value="Python Developer">Python Developer</option>
+                    <option value="Java Developer">Java Developer</option>
+                    <option value="Frontend Developer">Frontend Developer</option>
+                    <option value="Backend Developer">Backend Developer</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                </select>
+
+                <select id="filterStatus">
+                    <option value="">All Status</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Shortlisted">Shortlisted</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Selected">Selected</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+
+                <button onclick="loadCandidates()">Filter</button>
+
+            </div>
+
+
+            <!-- Table -->
+            <div class="table-container">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="candidateTable">
+                        <tr>
+                            <td colspan="6">Loading candidates...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from enum import Enum
 
 class Role(str, Enum):
@@ -19,16 +19,33 @@ class Status(str, Enum):
 class CandidateCreate(BaseModel):
     name: str
     email: EmailStr
-    phone: str
+    phone: str = Field(pattern=r"^\d{10}$")
     role: Role
     status: Status
     skills: str = ""
     experience: int = Field(default=0, ge=0)
 
+    @field_validator("role", mode="before")
+    @classmethod
+    def validate_role(cls, value):
+        for role in Role:
+            if value.lower() == role.value.lower():
+                return role
+        raise ValueError("Invalid role")
+
+
+    @field_validator("status", mode="before")
+    @classmethod
+    def validate_status(cls, value):
+        for status in Status:
+            if value.lower() == status.value.lower():
+                return status
+        raise ValueError("Invalid status")
+
 class CandidateUpdate(BaseModel):
     name: str | None = None
     email: EmailStr | None = None
-    phone: str | None = None
+    phone: str | None = Field(pattern=r"^\d{10}$")
     role: Role | None = None
     status: Status | None = None
     skills: str | None = None
