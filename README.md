@@ -27,8 +27,16 @@ A simple REST API for managing internship candidates, built using Python, FastAP
 
 ## How to Run
 
+python -m venv .venv
+
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+uvicorn app.main:app --reload
+
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/YashwanthK09/candidate_management_api.git
 cd candidate-management-api
